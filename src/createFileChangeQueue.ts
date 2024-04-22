@@ -1,11 +1,11 @@
-import { deduplicateFileChangeEvents } from './deduplicateFileChangeEvents';
-import { hashFile } from './hashFile';
-import { testExpression } from './testExpression';
+import { deduplicateFileChangeEvents } from './deduplicateFileChangeEvents.js';
+import { hashFile } from './hashFile.js';
+import { testExpression } from './testExpression.js';
 import {
   type Debounce,
   type FileChangeEvent,
   type Subscription,
-} from './types';
+} from './types.js';
 import path from 'node:path';
 import { debounce } from 'throttle-debounce';
 

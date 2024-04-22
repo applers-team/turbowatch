@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const deduplicateFileChangeEvents_1 = require("./deduplicateFileChangeEvents");
-const vitest_1 = require("vitest");
-(0, vitest_1.it)('keeps only the latest entry of a file change', async () => {
-    (0, vitest_1.expect)((0, deduplicateFileChangeEvents_1.deduplicateFileChangeEvents)([
+import { deduplicateFileChangeEvents } from './deduplicateFileChangeEvents.js';
+import { expect, it } from 'vitest';
+it('keeps only the latest entry of a file change', async () => {
+    expect(deduplicateFileChangeEvents([
         {
             filename: '/foo',
             hash: '1',

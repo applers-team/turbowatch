@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deduplicateFileChangeEvents = void 0;
-const deduplicateFileChangeEvents = (fileChangeEvents) => {
+export const deduplicateFileChangeEvents = (fileChangeEvents) => {
     const changedFilePaths = [];
     return fileChangeEvents
         .slice()
@@ -15,5 +12,4 @@ const deduplicateFileChangeEvents = (fileChangeEvents) => {
     })
         .reverse();
 };
-exports.deduplicateFileChangeEvents = deduplicateFileChangeEvents;
 //# sourceMappingURL=deduplicateFileChangeEvents.js.map

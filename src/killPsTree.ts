@@ -1,4 +1,4 @@
-import { Logger } from './Logger';
+import { Logger } from './Logger.js';
 import findProcess from 'find-process';
 import { setTimeout as delay } from 'node:timers/promises';
 import pidTree from 'pidtree';
@@ -19,6 +19,7 @@ export const killPsTree = async (
     try {
       process.kill(pid, 'SIGTERM');
     } catch (error) {
+      // @ts-ignore
       if (error.code === 'ESRCH') {
         log.debug({ pid }, 'process already terminated');
       } else {
@@ -40,6 +41,7 @@ export const killPsTree = async (
       try {
         process.kill(pid, 'SIGKILL');
       } catch (error) {
+        // @ts-ignore
         if (error.code === 'ESRCH') {
           log.debug({ pid }, 'process already terminated');
         } else {

@@ -1,1 +1,1 @@
-{"version":3,"file":"defineConfig.js","sourceRoot":"","sources":["../src/defineConfig.ts"],"names":[],"mappings":";;;AAAA,0DAAuD;AAGhD,MAAM,YAAY,GAAG,CAC1B,kBAAgD,EAClB,EAAE;IAChC,OAAO;QACL,OAAO,EAAE,2BAAY;QACrB,GAAG,kBAAkB;KACtB,CAAC;AACJ,CAAC,CAAC;AAPW,QAAA,YAAY,gBAOvB"}
+{"version":3,"file":"defineConfig.js","sourceRoot":"","sources":["../src/defineConfig.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,4BAA4B,CAAC;AAG1D,MAAM,CAAC,MAAM,YAAY,GAAG,CAC1B,kBAAgD,EAClB,EAAE;IAChC,OAAO;QACL,OAAO,EAAE,YAAY;QACrB,GAAG,kBAAkB;KACtB,CAAC;AACJ,CAAC,CAAC"}

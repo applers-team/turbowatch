@@ -1,4 +1,4 @@
-import { hashFile } from './hashFile';
+import { hashFile } from './hashFile.js';
 import { resolve } from 'node:path';
 import { expect, it } from 'vitest';
 

@@ -1,5 +1,5 @@
-import { createFileChangeQueue } from './createFileChangeQueue';
-import { type Subscription } from './types';
+import { createFileChangeQueue } from './createFileChangeQueue.js';
+import { type Subscription } from './types.js';
 import { mkdir, rmdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';

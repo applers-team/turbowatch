@@ -1,5 +1,5 @@
-import { subscribe } from './subscribe';
-import { type Trigger } from './types';
+import { subscribe } from './subscribe.js';
+import { type Trigger } from './types.js';
 import { setTimeout } from 'node:timers';
 import * as sinon from 'sinon';
 import { expect, it } from 'vitest';

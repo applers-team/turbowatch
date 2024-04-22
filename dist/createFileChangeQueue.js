@@ -1,19 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.createFileChangeQueue = void 0;
-const deduplicateFileChangeEvents_1 = require("./deduplicateFileChangeEvents");
-const hashFile_1 = require("./hashFile");
-const testExpression_1 = require("./testExpression");
-const node_path_1 = __importDefault(require("node:path"));
-const throttle_debounce_1 = require("throttle-debounce");
-const createFileChangeQueue = ({ project, abortSignal, userDebounce, subscriptions, }) => {
+import { deduplicateFileChangeEvents } from './deduplicateFileChangeEvents.js';
+import { hashFile } from './hashFile.js';
+import { testExpression } from './testExpression.js';
+import path from 'node:path';
+import { debounce } from 'throttle-debounce';
+export const createFileChangeQueue = ({ project, abortSignal, userDebounce, subscriptions, }) => {
     const fileHashMap = {};
     let queuedFileChangeEvents = [];
-    const evaluateSubscribers = (0, throttle_debounce_1.debounce)(userDebounce.wait, () => {
-        const currentFileChangeEvents = (0, deduplicateFileChangeEvents_1.deduplicateFileChangeEvents)(queuedFileChangeEvents);
+    const evaluateSubscribers = debounce(userDebounce.wait, () => {
+        const currentFileChangeEvents = deduplicateFileChangeEvents(queuedFileChangeEvents);
         queuedFileChangeEvents = [];
         const filesWithUnchangedHash = [];
         for (const fileChangeEvent of currentFileChangeEvents) {
@@ -35,13 +29,13 @@ const createFileChangeQueue = ({ project, abortSignal, userDebounce, subscriptio
                 if (filesWithUnchangedHash.includes(fileChangeEvent.filename)) {
                     continue;
                 }
-                if (!(0, testExpression_1.testExpression)(subscription.expression, node_path_1.default.relative(project, fileChangeEvent.filename))) {
+                if (!testExpression(subscription.expression, path.relative(project, fileChangeEvent.filename))) {
                     continue;
                 }
                 relevantEvents.push(fileChangeEvent);
             }
             if (relevantEvents.length) {
-                if (abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.aborted) {
+                if (abortSignal?.aborted) {
                     return;
                 }
                 void subscription.trigger(relevantEvents);
@@ -54,7 +48,7 @@ const createFileChangeQueue = ({ project, abortSignal, userDebounce, subscriptio
         trigger: (fileChangeEvent) => {
             if (fileChangeEvent.hash === undefined) {
                 // eslint-disable-next-line promise/prefer-await-to-then
-                (0, hashFile_1.hashFile)(fileChangeEvent.filename).then((hash) => {
+                hashFile(fileChangeEvent.filename).then((hash) => {
                     queuedFileChangeEvents.push({
                         ...fileChangeEvent,
                         hash,
@@ -69,5 +63,4 @@ const createFileChangeQueue = ({ project, abortSignal, userDebounce, subscriptio
         },
     };
 };
-exports.createFileChangeQueue = createFileChangeQueue;
 //# sourceMappingURL=createFileChangeQueue.js.map

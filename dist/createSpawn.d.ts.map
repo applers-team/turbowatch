@@ -1,1 +1,1 @@
-{"version":3,"file":"createSpawn.d.ts","sourceRoot":"","sources":["../src/createSpawn.ts"],"names":[],"mappings":";AAMA,OAAO,EAAE,KAAK,QAAQ,EAAE,MAAM,SAAS,CAAC;AA8BxC,eAAO,MAAM,WAAW,WACd,MAAM;;;;eAyCQ,oBAAoB,WAAW,GAAG,EAAE,wCAqG3D,CAAC"}
+{"version":3,"file":"createSpawn.d.ts","sourceRoot":"","sources":["../src/createSpawn.ts"],"names":[],"mappings":"AAMA,OAAO,EAAE,KAAK,QAAQ,EAAE,MAAM,YAAY,CAAC;AA8B3C,eAAO,MAAM,WAAW,WACd,MAAM;;;;eAyCQ,oBAAoB,WAAW,GAAG,EAAE,wCAqG3D,CAAC"}

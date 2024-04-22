@@ -1,5 +1,5 @@
-import { TurboWatcher } from './backends/TurboWatcher';
-import { type TurbowatchConfigurationInput } from './types';
+import { TurboWatcher } from './backends/TurboWatcher.js';
+import { type TurbowatchConfigurationInput } from './types.js';
 
 export const defineConfig = (
   configurationInput: TurbowatchConfigurationInput,

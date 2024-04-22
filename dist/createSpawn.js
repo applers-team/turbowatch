@@ -1,20 +1,14 @@
-"use strict";
 // cspell:words nothrow
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSpawn = void 0;
-const errors_1 = require("./errors");
-const findNearestDirectory_1 = require("./findNearestDirectory");
-const killPsTree_1 = require("./killPsTree");
-const Logger_1 = require("./Logger");
-const chalk_1 = __importDefault(require("chalk"));
-const node_child_process_1 = require("node:child_process");
-const randomcolor_1 = __importDefault(require("randomcolor"));
-const throttle_debounce_1 = require("throttle-debounce");
-const zx_1 = require("zx");
-const log = Logger_1.Logger.child({
+import { AbortError, UnexpectedError } from './errors.js';
+import { findNearestDirectory } from './findNearestDirectory.js';
+import { killPsTree } from './killPsTree.js';
+import { Logger } from './Logger.js';
+import chalk from 'chalk';
+import { execSync } from 'node:child_process';
+import randomColor from 'randomcolor';
+import { throttle } from 'throttle-debounce';
+import { $ } from 'zx';
+const log = Logger.child({
     namespace: 'createSpawn',
 });
 const prefixLines = (subject, prefix) => {
@@ -26,14 +20,14 @@ const prefixLines = (subject, prefix) => {
 };
 const hasPowershell = () => {
     try {
-        (0, node_child_process_1.execSync)('powershell.exe echo .');
+        execSync('powershell.exe echo .');
         return true;
     }
-    catch (_a) {
+    catch {
         return false;
     }
 };
-const createSpawn = (taskId, { cwd = process.cwd(), abortSignal, throttleOutput, } = {}) => {
+export const createSpawn = (taskId, { cwd = process.cwd(), abortSignal, throttleOutput, } = {}) => {
     let stdoutBuffer = [];
     let stderrBuffer = [];
     const flush = () => {
@@ -48,28 +42,28 @@ const createSpawn = (taskId, { cwd = process.cwd(), abortSignal, throttleOutput,
         stdoutBuffer = [];
         stderrBuffer = [];
     };
-    const output = (0, throttle_debounce_1.throttle)(throttleOutput === null || throttleOutput === void 0 ? void 0 : throttleOutput.delay, () => {
+    const output = throttle(throttleOutput?.delay, () => {
         flush();
     }, {
         noLeading: true,
     });
-    const colorText = chalk_1.default.hex((0, randomcolor_1.default)({ luminosity: 'dark' }));
+    const colorText = chalk.hex(randomColor({ luminosity: 'dark' }));
     return async (pieces, ...args) => {
-        const binPath = (await (0, findNearestDirectory_1.findNearestDirectory)('node_modules', cwd)) + '/.bin';
-        zx_1.$.cwd = cwd;
+        const binPath = (await findNearestDirectory('node_modules', cwd)) + '/.bin';
+        $.cwd = cwd;
         if (process.platform === 'win32' && hasPowershell()) {
-            zx_1.$.shell = 'powershell.exe';
-            zx_1.$.prefix = `$env:PATH+="${binPath}";`;
+            $.shell = 'powershell.exe';
+            $.prefix = `$env:PATH+="${binPath}";`;
         }
         else {
-            zx_1.$.prefix = `set -euo pipefail; export PATH="${binPath}:$PATH";`;
+            $.prefix = `set -euo pipefail; export PATH="${binPath}:$PATH";`;
         }
         let onStdout;
         let onStderr;
         const formatChunk = (chunk) => {
             return prefixLines(chunk.toString().trimEnd(), colorText(taskId) + ' > ');
         };
-        if (throttleOutput === null || throttleOutput === void 0 ? void 0 : throttleOutput.delay) {
+        if (throttleOutput?.delay) {
             onStdout = (chunk) => {
                 stdoutBuffer.push(formatChunk(chunk));
                 output();
@@ -89,26 +83,25 @@ const createSpawn = (taskId, { cwd = process.cwd(), abortSignal, throttleOutput,
                 console.error(formatChunk(chunk));
             };
         }
-        if (abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.aborted) {
-            throw new errors_1.UnexpectedError('Attempted to spawn a process after the task was aborted.');
+        if (abortSignal?.aborted) {
+            throw new UnexpectedError('Attempted to spawn a process after the task was aborted.');
         }
         // eslint-disable-next-line promise/prefer-await-to-then
-        const processPromise = (0, zx_1.$)(pieces, ...args)
+        const processPromise = $(pieces, ...args)
             .nothrow()
             .quiet();
         processPromise.stdout.on('data', onStdout);
         processPromise.stderr.on('data', onStderr);
         if (abortSignal) {
             const kill = () => {
-                var _a;
-                const pid = (_a = processPromise.child) === null || _a === void 0 ? void 0 : _a.pid;
+                const pid = processPromise.child?.pid;
                 if (!pid) {
                     log.warn('no process to kill');
                     return;
                 }
                 // TODO make this configurable
                 // eslint-disable-next-line promise/prefer-await-to-then
-                (0, killPsTree_1.killPsTree)(pid, 5000).then(() => {
+                killPsTree(pid, 5000).then(() => {
                     log.debug('task %s was killed', taskId);
                     processPromise.stdout.off('data', onStdout);
                     processPromise.stderr.off('data', onStderr);
@@ -127,12 +120,11 @@ const createSpawn = (taskId, { cwd = process.cwd(), abortSignal, throttleOutput,
         if (result.exitCode === 0) {
             return result;
         }
-        if (abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.aborted) {
-            throw new errors_1.AbortError('Program was aborted.');
+        if (abortSignal?.aborted) {
+            throw new AbortError('Program was aborted.');
         }
         log.error('task %s exited with an error', taskId);
         throw new Error('Program exited with code ' + result.exitCode + '.');
     };
 };
-exports.createSpawn = createSpawn;
 //# sourceMappingURL=createSpawn.js.map

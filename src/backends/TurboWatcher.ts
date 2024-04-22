@@ -1,10 +1,10 @@
 /* eslint-disable canonical/filename-match-regex */
 
-import { isFSWatcherAvailable } from '../isFSWatcherAvailable';
-import { Logger } from '../Logger';
-import { ChokidarWatcher } from './ChokidarWatcher';
-import { FileWatchingBackend } from './FileWatchingBackend';
-import { FSWatcher } from './FSWatcher';
+import { isFSWatcherAvailable } from '../isFSWatcherAvailable.js';
+import { Logger } from '../Logger.js';
+import { ChokidarWatcher } from './ChokidarWatcher.js';
+import { FileWatchingBackend } from './FileWatchingBackend.js';
+import { FSWatcher } from './FSWatcher.js';
 
 const log = Logger.child({
   namespace: 'TurboWatcher',

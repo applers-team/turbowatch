@@ -1,4 +1,4 @@
-import { watch } from './watch';
+import { watch } from './watch.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { setTimeout } from 'node:timers/promises';

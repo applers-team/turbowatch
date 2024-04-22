@@ -1,6 +1,6 @@
 /* eslint-disable canonical/filename-match-regex */
 
-import { FileWatchingBackend } from './FileWatchingBackend';
+import { FileWatchingBackend } from './FileWatchingBackend.js';
 import { glob } from 'glob';
 import { type FSWatcher as NativeFSWatcher, watch } from 'node:fs';
 import { lstat, realpath } from 'node:fs/promises';

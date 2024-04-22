@@ -1,6 +1,6 @@
 // cspell:words nocase
 
-import { type Expression } from './types';
+import { type Expression } from './types.js';
 import micromatch from 'micromatch';
 import path from 'node:path';
 

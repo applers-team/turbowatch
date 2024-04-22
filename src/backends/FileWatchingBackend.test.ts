@@ -1,8 +1,8 @@
-import { isFSWatcherAvailable } from '../isFSWatcherAvailable';
-import { ChokidarWatcher } from './ChokidarWatcher';
-import { type FileWatchingBackend } from './FileWatchingBackend';
-import { FSWatcher } from './FSWatcher';
-import { TurboWatcher } from './TurboWatcher';
+import { isFSWatcherAvailable } from '../isFSWatcherAvailable.js';
+import { ChokidarWatcher } from './ChokidarWatcher.js';
+import { type FileWatchingBackend } from './FileWatchingBackend.js';
+import { FSWatcher } from './FSWatcher.js';
+import { TurboWatcher } from './TurboWatcher.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { setTimeout } from 'node:timers/promises';

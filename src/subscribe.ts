@@ -1,12 +1,12 @@
-import { createSpawn } from './createSpawn';
-import { generateShortId } from './generateShortId';
-import { Logger } from './Logger';
+import { createSpawn } from './createSpawn.js';
+import { generateShortId } from './generateShortId.js';
+import { Logger } from './Logger.js';
 import {
   type ActiveTask,
   type FileChangeEvent,
   type Subscription,
   type Trigger,
-} from './types';
+} from './types.js';
 import { setTimeout } from 'node:timers/promises';
 import { serializeError } from 'serialize-error';
 
@@ -125,6 +125,7 @@ const runTask = async ({
 
       return;
     } catch (error) {
+      // @ts-ignore
       if (error.name === 'AbortError') {
         log.warn('%s (%s): task aborted', trigger.name, taskId);
 
@@ -358,6 +359,7 @@ export const subscribe = (trigger: Trigger): Subscription => {
             }),
           });
         } catch (error) {
+          // @ts-ignore
           log.error(
             {
               error,
@@ -379,6 +381,7 @@ export const subscribe = (trigger: Trigger): Subscription => {
       try {
         await handleSubscriptionEvent();
       } catch (error) {
+        // @ts-ignore
         log.error(
           {
             error,

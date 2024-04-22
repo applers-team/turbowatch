@@ -1,8 +1,8 @@
-export { ChokidarWatcher } from './backends/ChokidarWatcher';
-export { FileWatchingBackend } from './backends/FileWatchingBackend';
-export { FSWatcher } from './backends/FSWatcher';
-export { TurboWatcher } from './backends/TurboWatcher';
-export { defineConfig } from './defineConfig';
-export { type ChangeEvent, type Expression, type TriggerInput } from './types';
-export { watch } from './watch';
+export { ChokidarWatcher } from './backends/ChokidarWatcher.js';
+export { FileWatchingBackend } from './backends/FileWatchingBackend.js';
+export { FSWatcher } from './backends/FSWatcher.js';
+export { TurboWatcher } from './backends/TurboWatcher.js';
+export { defineConfig } from './defineConfig.js';
+export { type ChangeEvent, type Expression, type TriggerInput } from './types.js';
+export { watch } from './watch.js';
 export { type ProcessPromise } from 'zx';

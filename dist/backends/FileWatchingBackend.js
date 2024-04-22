@@ -1,14 +1,8 @@
-"use strict";
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 /* eslint-disable @typescript-eslint/method-signature-style */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.FileWatchingBackend = void 0;
-const node_events_1 = require("node:events");
-const node_path_1 = __importDefault(require("node:path"));
-class FileWatchingBackend extends node_events_1.EventEmitter {
+import { EventEmitter } from 'node:events';
+import path from 'node:path';
+export class FileWatchingBackend extends EventEmitter {
     constructor() {
         super();
     }
@@ -16,7 +10,7 @@ class FileWatchingBackend extends node_events_1.EventEmitter {
         this.emit('ready');
     }
     emitChange(event) {
-        if (!node_path_1.default.isAbsolute(event.filename)) {
+        if (!path.isAbsolute(event.filename)) {
             throw new Error('Watchers must emit absolute paths');
         }
         this.emit('change', {
@@ -24,5 +18,4 @@ class FileWatchingBackend extends node_events_1.EventEmitter {
         });
     }
 }
-exports.FileWatchingBackend = FileWatchingBackend;
 //# sourceMappingURL=FileWatchingBackend.js.map

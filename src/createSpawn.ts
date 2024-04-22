@@ -1,10 +1,10 @@
 // cspell:words nothrow
 
-import { AbortError, UnexpectedError } from './errors';
-import { findNearestDirectory } from './findNearestDirectory';
-import { killPsTree } from './killPsTree';
-import { Logger } from './Logger';
-import { type Throttle } from './types';
+import { AbortError, UnexpectedError } from './errors.js';
+import { findNearestDirectory } from './findNearestDirectory.js';
+import { killPsTree } from './killPsTree.js';
+import { Logger } from './Logger.js';
+import { type Throttle } from './types.js';
 import chalk from 'chalk';
 import { execSync } from 'node:child_process';
 import randomColor from 'randomcolor';

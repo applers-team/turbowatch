@@ -1,5 +1,5 @@
-/// <reference types="node" />
-import { type FileChangeEvent } from '../types';
+/// <reference types="node" resolution-mode="require"/>
+import { type FileChangeEvent } from '../types.js';
 import { EventEmitter } from 'node:events';
 interface BackendEventEmitter {
     on(name: 'ready', listener: () => void): this;

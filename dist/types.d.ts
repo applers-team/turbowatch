@@ -1,5 +1,4 @@
-/// <reference types="node" />
-import { type FileWatchingBackend } from './backends/FileWatchingBackend';
+import { type FileWatchingBackend } from './backends/FileWatchingBackend.js';
 import { type Logger } from 'roarr';
 import { type ProcessOutput } from 'zx';
 export type Expression = ['allof', ...Expression[]] | ['anyof', ...Expression[]] | ['dirname' | 'idirname', string] | ['match' | 'imatch', string] | ['match' | 'imatch', string, 'basename' | 'wholename'] | ['not', Expression];

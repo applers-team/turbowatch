@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 /* eslint-disable @typescript-eslint/method-signature-style */
 
-import { type FileChangeEvent } from '../types';
+import { type FileChangeEvent } from '../types.js';
 import { EventEmitter } from 'node:events';
 import path from 'node:path';
 

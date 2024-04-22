@@ -1,4 +1,4 @@
-import { deduplicateFileChangeEvents } from './deduplicateFileChangeEvents';
+import { deduplicateFileChangeEvents } from './deduplicateFileChangeEvents.js';
 import { expect, it } from 'vitest';
 
 it('keeps only the latest entry of a file change', async () => {

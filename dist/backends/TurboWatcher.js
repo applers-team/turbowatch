@@ -1,25 +1,22 @@
-"use strict";
 /* eslint-disable canonical/filename-match-regex */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TurboWatcher = void 0;
-const isFSWatcherAvailable_1 = require("../isFSWatcherAvailable");
-const Logger_1 = require("../Logger");
-const ChokidarWatcher_1 = require("./ChokidarWatcher");
-const FileWatchingBackend_1 = require("./FileWatchingBackend");
-const FSWatcher_1 = require("./FSWatcher");
-const log = Logger_1.Logger.child({
+import { isFSWatcherAvailable } from '../isFSWatcherAvailable.js';
+import { Logger } from '../Logger.js';
+import { ChokidarWatcher } from './ChokidarWatcher.js';
+import { FileWatchingBackend } from './FileWatchingBackend.js';
+import { FSWatcher } from './FSWatcher.js';
+const log = Logger.child({
     namespace: 'TurboWatcher',
 });
-class TurboWatcher extends FileWatchingBackend_1.FileWatchingBackend {
+export class TurboWatcher extends FileWatchingBackend {
     constructor(project) {
         super();
-        if ((0, isFSWatcherAvailable_1.isFSWatcherAvailable)()) {
+        if (isFSWatcherAvailable()) {
             log.info('using native FSWatcher');
-            this.backend = new FSWatcher_1.FSWatcher(project);
+            this.backend = new FSWatcher(project);
         }
         else {
             log.info('using native ChokidarWatcher');
-            this.backend = new ChokidarWatcher_1.ChokidarWatcher(project);
+            this.backend = new ChokidarWatcher(project);
         }
         this.backend.on('ready', () => {
             this.emit('ready');
@@ -32,5 +29,4 @@ class TurboWatcher extends FileWatchingBackend_1.FileWatchingBackend {
         return this.backend.close();
     }
 }
-exports.TurboWatcher = TurboWatcher;
 //# sourceMappingURL=TurboWatcher.js.map

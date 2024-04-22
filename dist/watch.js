@@ -1,17 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.watch = void 0;
-const TurboWatcher_1 = require("./backends/TurboWatcher");
-const createFileChangeQueue_1 = require("./createFileChangeQueue");
-const generateShortId_1 = require("./generateShortId");
-const Logger_1 = require("./Logger");
-const subscribe_1 = require("./subscribe");
-const serialize_error_1 = require("serialize-error");
-const log = Logger_1.Logger.child({
+import { TurboWatcher } from './backends/TurboWatcher.js';
+import { createFileChangeQueue } from './createFileChangeQueue.js';
+import { generateShortId } from './generateShortId.js';
+import { Logger } from './Logger.js';
+import { subscribe } from './subscribe.js';
+import { serializeError } from 'serialize-error';
+const log = Logger.child({
     namespace: 'watch',
 });
-const watch = (configurationInput) => {
-    var _a, _b, _c, _d;
+export const watch = (configurationInput) => {
     const { abortController, cwd, project, triggers, debounce: userDebounce, Watcher, } = {
         abortController: new AbortController(),
         // as far as I can tell, this is a bug in unicorn/no-unused-properties
@@ -21,7 +17,7 @@ const watch = (configurationInput) => {
             wait: 1000,
         },
         // eslint-disable-next-line unicorn/no-unused-properties
-        Watcher: TurboWatcher_1.TurboWatcher,
+        Watcher: TurboWatcher,
         ...configurationInput,
     };
     const abortSignal = abortController.signal;
@@ -37,8 +33,8 @@ const watch = (configurationInput) => {
         abortController.abort();
         for (const subscription of subscriptions) {
             const { activeTask } = subscription;
-            if (activeTask === null || activeTask === void 0 ? void 0 : activeTask.promise) {
-                await (activeTask === null || activeTask === void 0 ? void 0 : activeTask.promise);
+            if (activeTask?.promise) {
+                await activeTask?.promise;
             }
         }
         for (const subscription of subscriptions) {
@@ -56,18 +52,18 @@ const watch = (configurationInput) => {
         });
     }
     for (const trigger of triggers) {
-        const initialRun = (_a = trigger.initialRun) !== null && _a !== void 0 ? _a : true;
-        const persistent = (_b = trigger.persistent) !== null && _b !== void 0 ? _b : false;
+        const initialRun = trigger.initialRun ?? true;
+        const persistent = trigger.persistent ?? false;
         if (persistent && !initialRun) {
             throw new Error('Persistent triggers must have initialRun set to true.');
         }
-        subscriptions.push((0, subscribe_1.subscribe)({
+        subscriptions.push(subscribe({
             abortSignal,
             cwd,
             expression: trigger.expression,
-            id: (0, generateShortId_1.generateShortId)(),
+            id: generateShortId(),
             initialRun,
-            interruptible: (_c = trigger.interruptible) !== null && _c !== void 0 ? _c : true,
+            interruptible: trigger.interruptible ?? true,
             name: trigger.name,
             onChange: trigger.onChange,
             onTeardown: trigger.onTeardown,
@@ -76,11 +72,11 @@ const watch = (configurationInput) => {
                 retries: 3,
                 ...trigger.retry,
             },
-            throttleOutput: (_d = trigger.throttleOutput) !== null && _d !== void 0 ? _d : { delay: 1000 },
+            throttleOutput: trigger.throttleOutput ?? { delay: 1000 },
         }));
     }
     let ready = false;
-    const fileChangeQueue = (0, createFileChangeQueue_1.createFileChangeQueue)({
+    const fileChangeQueue = createFileChangeQueue({
         abortSignal,
         project,
         subscriptions,
@@ -96,7 +92,7 @@ const watch = (configurationInput) => {
     return new Promise((resolve, reject) => {
         watcher.on('error', (error) => {
             log.error({
-                error: (0, serialize_error_1.serializeError)(error),
+                error: serializeError(error),
             }, 'could not watch project');
             if (ready) {
                 shutdown();
@@ -122,5 +118,4 @@ const watch = (configurationInput) => {
         });
     });
 };
-exports.watch = watch;
 //# sourceMappingURL=watch.js.map

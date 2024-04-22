@@ -1,4 +1,4 @@
-import { type FileChangeEvent } from './types';
+import { type FileChangeEvent } from './types.js';
 
 export const deduplicateFileChangeEvents = (
   fileChangeEvents: readonly FileChangeEvent[],

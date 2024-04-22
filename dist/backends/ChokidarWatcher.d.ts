@@ -1,4 +1,4 @@
-import { FileWatchingBackend } from './FileWatchingBackend';
+import { FileWatchingBackend } from './FileWatchingBackend.js';
 export declare class ChokidarWatcher extends FileWatchingBackend {
     private chokidar;
     private indexingIntervalId;

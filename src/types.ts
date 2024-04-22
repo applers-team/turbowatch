@@ -1,6 +1,6 @@
 // cspell:words idirname imatch iname wholename
 
-import { type FileWatchingBackend } from './backends/FileWatchingBackend';
+import { type FileWatchingBackend } from './backends/FileWatchingBackend.js';
 import { type Logger } from 'roarr';
 import { type ProcessOutput } from 'zx';
 

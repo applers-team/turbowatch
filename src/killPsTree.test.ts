@@ -1,4 +1,4 @@
-import { killPsTree } from './killPsTree';
+import { killPsTree } from './killPsTree.js';
 import { exec } from 'node:child_process';
 import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';

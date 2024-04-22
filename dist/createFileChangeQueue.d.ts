@@ -1,5 +1,4 @@
-/// <reference types="node" />
-import { type Debounce, type FileChangeEvent, type Subscription } from './types';
+import { type Debounce, type FileChangeEvent, type Subscription } from './types.js';
 export declare const createFileChangeQueue: ({ project, abortSignal, userDebounce, subscriptions, }: {
     abortSignal: AbortSignal;
     project: string;

@@ -1,15 +1,15 @@
-import { TurboWatcher } from './backends/TurboWatcher';
-import { createFileChangeQueue } from './createFileChangeQueue';
-import { generateShortId } from './generateShortId';
-import { Logger } from './Logger';
-import { subscribe } from './subscribe';
+import { TurboWatcher } from './backends/TurboWatcher.js';
+import { createFileChangeQueue } from './createFileChangeQueue.js';
+import { generateShortId } from './generateShortId.js';
+import { Logger } from './Logger.js';
+import { subscribe } from './subscribe.js';
 import {
   type JsonObject,
   type Subscription,
   type TurbowatchConfiguration,
   type TurbowatchConfigurationInput,
   type TurbowatchController,
-} from './types';
+} from './types.js';
 import { serializeError } from 'serialize-error';
 
 const log = Logger.child({

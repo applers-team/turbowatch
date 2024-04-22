@@ -1,5 +1,4 @@
-/// <reference types="node" />
-import { type Throttle } from './types';
+import { type Throttle } from './types.js';
 export declare const createSpawn: (taskId: string, { cwd, abortSignal, throttleOutput, }?: {
     abortSignal?: AbortSignal | undefined;
     cwd?: string | undefined;

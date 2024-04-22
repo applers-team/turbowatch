@@ -1,19 +1,14 @@
 #!/usr/bin/env node
-"use strict";
 /* eslint-disable node/shebang */
 /* eslint-disable require-atomic-updates */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const Logger_1 = require("../Logger");
-const glob_1 = require("glob");
-const jiti_1 = __importDefault(require("jiti"));
-const node_fs_1 = require("node:fs");
-const node_path_1 = __importDefault(require("node:path"));
-const helpers_1 = require("yargs/helpers");
-const yargs_1 = __importDefault(require("yargs/yargs"));
-const log = Logger_1.Logger.child({
+import { Logger } from '../Logger.js';
+import { glob } from 'glob';
+import jiti from 'jiti';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { hideBin } from 'yargs/helpers';
+import yargs from 'yargs/yargs';
+const log = Logger.child({
     namespace: 'turbowatch',
 });
 // eslint-disable-next-line node/no-process-env
@@ -23,13 +18,13 @@ if (process.env.ROARR_LOG !== 'true') {
 }
 const findTurbowatchScript = (inputPath) => {
     let resolvedPath = null;
-    const providedPath = node_path_1.default.resolve(process.cwd(), inputPath);
+    const providedPath = path.resolve(process.cwd(), inputPath);
     const possiblePaths = [providedPath];
-    if (node_path_1.default.extname(providedPath) === '') {
+    if (path.extname(providedPath) === '') {
         possiblePaths.push(providedPath + '.ts', providedPath + '.js');
     }
     for (const possiblePath of possiblePaths) {
-        if ((0, node_fs_1.existsSync)(possiblePath)) {
+        if (existsSync(possiblePath)) {
             resolvedPath = possiblePath;
         }
     }
@@ -56,8 +51,8 @@ const main = async () => {
         log.warn('received SIGTERM; gracefully terminating');
         abortController.abort();
     });
-    const { watch, } = (0, jiti_1.default)(__filename)('../watch');
-    const argv = await (0, yargs_1.default)((0, helpers_1.hideBin)(process.argv))
+    const { watch, } = jiti(__filename)('../watch');
+    const argv = await yargs(hideBin(process.argv))
         .command('$0 [patterns...]', 'Start Turbowatch', (commandYargs) => {
         commandYargs.positional('patterns', {
             array: true,
@@ -71,7 +66,7 @@ const main = async () => {
     const scriptPaths = [];
     for (const pattern of patterns) {
         if (pattern.includes('*')) {
-            scriptPaths.push(...(await (0, glob_1.glob)(pattern)));
+            scriptPaths.push(...(await glob(pattern)));
         }
         else {
             scriptPaths.push(pattern);
@@ -88,16 +83,17 @@ const main = async () => {
         resolvedScriptPaths.push(resolvedPath);
     }
     for (const resolvedPath of resolvedScriptPaths) {
-        const turbowatchConfiguration = (0, jiti_1.default)(__filename)(resolvedPath)
+        // @ts-ignore
+        const turbowatchConfiguration = jiti(__filename)(resolvedPath)
             .default;
-        if (typeof (turbowatchConfiguration === null || turbowatchConfiguration === void 0 ? void 0 : turbowatchConfiguration.Watcher) !== 'function') {
+        if (typeof turbowatchConfiguration?.Watcher !== 'function') {
             log.error('Expected user script to export an instance of TurbowatchController');
             process.exitCode = 1;
             return;
         }
         await watch({
             abortController,
-            cwd: node_path_1.default.dirname(resolvedPath),
+            cwd: path.dirname(resolvedPath),
             ...turbowatchConfiguration,
         });
     }

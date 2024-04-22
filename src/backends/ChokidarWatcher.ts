@@ -1,5 +1,5 @@
-import { Logger } from '../Logger';
-import { FileWatchingBackend } from './FileWatchingBackend';
+import { Logger } from '../Logger.js';
+import { FileWatchingBackend } from './FileWatchingBackend.js';
 import * as chokidar from 'chokidar';
 
 const log = Logger.child({

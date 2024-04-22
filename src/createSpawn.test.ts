@@ -1,4 +1,4 @@
-import { createSpawn } from './createSpawn';
+import { createSpawn } from './createSpawn.js';
 import { expect, it } from 'vitest';
 
 it('returns outputs', async () => {

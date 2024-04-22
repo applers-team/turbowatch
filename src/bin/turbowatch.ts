@@ -3,11 +3,11 @@
 /* eslint-disable node/shebang */
 /* eslint-disable require-atomic-updates */
 
-import { Logger } from '../Logger';
+import { Logger } from '../Logger.js';
 import {
   type TurbowatchConfigurationInput,
   type TurbowatchController,
-} from '../types';
+} from '../types.js';
 import { glob } from 'glob';
 import jiti from 'jiti';
 import { existsSync } from 'node:fs';
@@ -86,6 +86,7 @@ const main = async () => {
     watch: (
       configurationInput: TurbowatchConfigurationInput,
     ) => Promise<TurbowatchController>;
+  // @ts-ignore
   } = jiti(__filename)('../watch');
 
   const argv = await yargs(hideBin(process.argv))
@@ -129,6 +130,7 @@ const main = async () => {
   }
 
   for (const resolvedPath of resolvedScriptPaths) {
+    // @ts-ignore
     const turbowatchConfiguration = jiti(__filename)(resolvedPath)
       .default as TurbowatchConfigurationInput;
 

@@ -1,4 +1,4 @@
-import { testExpression } from './testExpression';
+import { testExpression } from './testExpression.js';
 import { expect, it } from 'vitest';
 
 it('[allof] evaluates as true if all of the grouped expressions also evaluated as true (true)', () => {
